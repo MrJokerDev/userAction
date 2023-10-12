@@ -4,8 +4,6 @@ namespace App\Services;
 
 use App\Models\File;
 use App\Models\User;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class FileService
 {

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\File;
-use App\Models\User;
 use App\Services\FileService;
 use Illuminate\Http\Request;
 
@@ -15,15 +14,15 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $files = File::all();
 
-        foreach ($users as $user) {
-            $user->files;
+        foreach ($files as $file) {
+            $file->users;
         }
 
         return response()->json([
-            'users' => $users
-        ]);
+            'files' => $files
+        ], 200);
     }
 
 
@@ -32,12 +31,12 @@ class AdminController extends Controller
      */
     public function store(Request $request, FileService $fileService)
     {
-        // $userId = auth()->user()->id;
-        $fileService->uploadFile($request, 1);
+        $userId = auth()->user()->id;
+        $fileService->uploadFile($request, $userId);
 
         return response()->json([
             'message' => 'Success create file'
-        ]);
+        ], 200);
     }
 
 
@@ -49,6 +48,6 @@ class AdminController extends Controller
         $file = File::find($id);
 
         $file->delete();
-        return response()->json(['message' => 'File deleted successfully']);
+        return response()->json(['message' => 'File deleted successfully'], 200);
     }
 }

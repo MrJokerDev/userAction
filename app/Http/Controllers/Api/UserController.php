@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\File;
-use App\Models\User;
 use App\Services\FileService;
 use Illuminate\Http\Request;
 
@@ -23,7 +22,7 @@ class UserController extends Controller
 
         return response()->json([
             'files' => $files
-        ]);
+        ], 200);
     }
 
     /**
@@ -32,10 +31,10 @@ class UserController extends Controller
     public function store(Request $request, FileService $fileService)
     {
         $userId = auth()->user()->id;
-        $fileService->uploadFile($request, 3);
+        $fileService->uploadFile($request, $userId);
 
         return response()->json([
             'message' => 'Success create file'
-        ]);
+        ], 200);
     }
 }

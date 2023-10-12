@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\File;
-use App\Models\User;
 use App\Services\FileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,14 +15,14 @@ class ModeratorController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $files = File::all();
 
-        foreach ($users as $user) {
-            $user->files;
+        foreach ($files as $file) {
+            $file->users;
         }
         return response()->json([
-            'files' => $users
-        ]);
+            'files' => $files
+        ], 200);
     }
 
 
@@ -33,11 +32,11 @@ class ModeratorController extends Controller
     public function store(Request $request, FileService $fileService)
     {
         $userId = auth()->user()->id;
-        $fileService->uploadFile($request, 2);
+        $fileService->uploadFile($request, $userId);
 
         return response()->json([
             'message' => 'Success create file'
-        ]);
+        ], 200);
     }
 
     /**
@@ -61,6 +60,6 @@ class ModeratorController extends Controller
 
         $file->delete();
 
-        return response()->json(['message' => 'File deleted successfully']);
+        return response()->json(['message' => 'File deleted successfully'], 200);
     }
 }
