@@ -38,7 +38,7 @@ class AuthController extends Controller
 
         return response()->json([
             'user' => $user,
-            'role_name' => $user->getRoles(),
+            'user_role' => $user->getRoles(),
             'authorization' => [
                 'token' => $token,
                 'type' => 'bearer',
@@ -78,8 +78,13 @@ class AuthController extends Controller
 
     public function refresh()
     {
+        $user = Auth::user();
+
+        $user = User::find($user->id);
+
         return response()->json([
             'user' => Auth::user(),
+            'user_role' => $user->getRoles(),
             'authorisation' => [
                 'token' => Auth::refresh(),
                 'type' => 'bearer',
