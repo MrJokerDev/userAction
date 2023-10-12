@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\File;
+use App\Models\User;
 use App\Services\FileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,8 +29,12 @@ class ModeratorController extends Controller
         foreach ($files as $file) {
             $file->users;
         }
+
+        $user = User::find($this->userId);
+
         return response()->json([
-            'files' => $files
+            'files' => $files,
+            'user_role' => $user->getRoles()
         ], 200);
     }
 
