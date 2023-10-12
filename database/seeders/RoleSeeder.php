@@ -56,6 +56,7 @@ class RoleSeeder extends Seeder
         $admin = new User();
         $admin->name = 'Admin';
         $admin->email = 'admin@gmail.com';
+        $admin->role = 'admin';
         $admin->password = bcrypt('admin');
         $admin->save();
         $admin->roles()->attach($admin);
@@ -64,6 +65,7 @@ class RoleSeeder extends Seeder
         $user = new User();
         $user->name = 'Moderator';
         $user->email = 'moderator@gmail.com';
+        $user->role = 'moderator';
         $user->password = bcrypt('moderator');
         $user->save();
         $user->roles()->attach($moderatorRole);
@@ -72,6 +74,7 @@ class RoleSeeder extends Seeder
         $user = new User();
         $user->name = 'User';
         $user->email = 'user@gmail.com';
+        $user->role = 'user';
         $user->password = bcrypt('user');
         $user->save();
         $user->roles()->attach($userRole);

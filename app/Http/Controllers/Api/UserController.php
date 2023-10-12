@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\File;
-use App\Models\User;
 use App\Services\FileService;
 use Illuminate\Http\Request;
 
@@ -21,11 +20,8 @@ class UserController extends Controller
             $query->where('user_id', $userId);
         })->get();
 
-        $user = User::find($userId);
-
         return response()->json([
             'files' => $files,
-            'user_role' => $user->getRole()
         ], 200);
     }
 

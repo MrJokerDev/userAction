@@ -34,11 +34,8 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
-        $user = User::find($user->id);
-
         return response()->json([
             'user' => $user,
-            'user_role' => $user->getRoles(),
             'authorization' => [
                 'token' => $token,
                 'type' => 'bearer',
@@ -80,11 +77,8 @@ class AuthController extends Controller
     {
         $user = Auth::user();
 
-        $user = User::find($user->id);
-
         return response()->json([
             'user' => Auth::user(),
-            'user_role' => $user->getRoles(),
             'authorisation' => [
                 'token' => Auth::refresh(),
                 'type' => 'bearer',

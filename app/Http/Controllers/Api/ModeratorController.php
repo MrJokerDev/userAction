@@ -4,21 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\File;
-use App\Models\User;
 use App\Services\FileService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ModeratorController extends Controller
 {
-
-    protected $userId;
-
-    public function __construct()
-    {
-        $this->userId = auth()->user()->id;
-    }
-
     /**
      * Display a listing of the resource.
      */
@@ -29,12 +20,8 @@ class ModeratorController extends Controller
         foreach ($files as $file) {
             $file->users;
         }
-
-        $user = User::find($this->userId);
-
         return response()->json([
-            'files' => $files,
-            'user_role' => $user->getRoles()
+            'files' => $files
         ], 200);
     }
 
@@ -44,7 +31,8 @@ class ModeratorController extends Controller
      */
     public function store(Request $request, FileService $fileService)
     {
-        $fileService->uploadFile($request, $this->userId);
+        $userId = auth()->user()->id;
+        $fileService->uploadFile($request, $userId);
 
         return response()->json([
             'message' => 'Success create file'
