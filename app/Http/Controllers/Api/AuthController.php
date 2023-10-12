@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -21,6 +22,7 @@ class AuthController extends Controller
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
+
         $credentials = $request->only('email', 'password');
         $token = Auth::attempt($credentials);
 
@@ -31,8 +33,12 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
+
+        $user = User::find($user->id);
+
         return response()->json([
             'user' => $user,
+            'role_name' => $user->getRoles(),
             'authorization' => [
                 'token' => $token,
                 'type' => 'bearer',
@@ -53,6 +59,8 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        $user->roles()->attach(Role::where('name', 'user')->first());
 
         return response()->json([
             'message' => 'User created successfully',
