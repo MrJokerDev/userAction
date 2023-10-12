@@ -4,11 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\File;
+use App\Models\User;
 use App\Services\FileService;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
+    protected $userId;
+
+    public function __construct()
+    {
+        $this->userId = auth()->user()->id;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -16,12 +24,15 @@ class AdminController extends Controller
     {
         $files = File::all();
 
+        $user = User::find($this->userId);
+
         foreach ($files as $file) {
             $file->users;
         }
 
         return response()->json([
-            'files' => $files
+            'files' => $files,
+            'user_role' => $user->getRoles()
         ], 200);
     }
 
@@ -31,8 +42,7 @@ class AdminController extends Controller
      */
     public function store(Request $request, FileService $fileService)
     {
-        $userId = auth()->user()->id;
-        $fileService->uploadFile($request, $userId);
+        $fileService->uploadFile($request, $this->userId);
 
         return response()->json([
             'message' => 'Success create file'

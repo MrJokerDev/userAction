@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Auth;
 
 class ModeratorController extends Controller
 {
+
+    protected $userId;
+
+    public function __construct()
+    {
+        $this->userId = auth()->user()->id;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -31,8 +39,7 @@ class ModeratorController extends Controller
      */
     public function store(Request $request, FileService $fileService)
     {
-        $userId = auth()->user()->id;
-        $fileService->uploadFile($request, $userId);
+        $fileService->uploadFile($request, $this->userId);
 
         return response()->json([
             'message' => 'Success create file'
